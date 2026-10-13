@@ -54,7 +54,7 @@ class YouTube(Adapter):
             if self.wait(max(read["interval_ms"] / 1000.0, floor, 1.0)):
                 return
 
-    # -- finding the chat --------------------------------------------------------
+    # Finding the chat.
 
     def find_chat(self):
         kind, value = parse.target_of(self.settings.get("youtube_video", ""))
@@ -97,7 +97,7 @@ class YouTube(Adapter):
                       "Pasting the stream's own address costs less quota than a channel.",
                       retry_s=120, state=WAITING)
 
-    # -- calling the API ---------------------------------------------------------
+    # Calling the API.
 
     def oauth(self):
         return bool(self.settings.get("youtube_oauth_token")

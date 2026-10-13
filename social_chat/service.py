@@ -47,7 +47,7 @@ class Chat:
         self.running = {}   # platform -> adapter
         self.onair = None   # {"id", "style", "comment"} while a card is up
 
-    # -- adapters ----------------------------------------------------------------
+    # Adapters.
 
     def apply(self, params=None):
         """Take the mixer's params and start what is set up."""

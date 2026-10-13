@@ -106,8 +106,8 @@ class Settings:
             saved = {}
         for key, value in (saved.get("values") or {}).items():
             if key in DEFAULTS:
-                self.values[key] = coerce(key, vault.unlock(value))
-        self.from_mixer = {k: vault.unlock(v) for k, v in (saved.get("from_mixer") or {}).items()}
+                self.values[key] = coerce(key, vault.unprotect(value))
+        self.from_mixer = {k: vault.unprotect(v) for k, v in (saved.get("from_mixer") or {}).items()}
         self._register()
 
     def take_mixer(self, params):
@@ -156,8 +156,8 @@ class Settings:
 
     def save(self):
         os.makedirs(self.folder, exist_ok=True)
-        locked = {k: vault.lock(v) if k in SECRETS else v for k, v in self.values.items()}
-        mixer = {k: vault.lock(v) if k in SECRETS else v for k, v in self.from_mixer.items()}
+        locked = {k: vault.protect(v) if k in SECRETS else v for k, v in self.values.items()}
+        mixer = {k: vault.protect(v) if k in SECRETS else v for k, v in self.from_mixer.items()}
         body = json.dumps({"values": locked, "from_mixer": mixer}, indent=2, sort_keys=True)
         handle, temp = tempfile.mkstemp(dir=self.folder, prefix=".settings-")
         try:

@@ -47,21 +47,21 @@ def available():
     return sys.platform == "win32" and not os.environ.get("SOCIAL_CHAT_NO_DPAPI")
 
 
-def lock(value):
+def protect(value):
     if not value or not available():
         return value
     try:
-        protect, _ = _dpapi()
-        return PREFIX + base64.b64encode(protect(value.encode("utf-8"))).decode("ascii")
+        seal, _ = _dpapi()
+        return PREFIX + base64.b64encode(seal(value.encode("utf-8"))).decode("ascii")
     except (OSError, AttributeError):
         return value
 
 
-def unlock(value):
+def unprotect(value):
     if not isinstance(value, str) or not value.startswith(PREFIX):
         return value
     try:
-        _, unprotect = _dpapi()
-        return unprotect(base64.b64decode(value[len(PREFIX):])).decode("utf-8")
+        _, opener = _dpapi()
+        return opener(base64.b64decode(value[len(PREFIX):])).decode("utf-8")
     except (OSError, AttributeError, ValueError):
         return ""  # another user's or another machine's file: the key must be typed again

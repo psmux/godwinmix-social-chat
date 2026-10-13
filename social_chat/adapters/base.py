@@ -59,13 +59,13 @@ class Adapter:
     def configured(cls, settings):
         return False
 
-    # -- what a subclass writes ----------------------------------------------
+    # What a subclass writes.
 
     def session(self):
         """Connect and read until stopped. Return or raise to be run again."""
         raise NotImplementedError
 
-    # -- what a subclass calls -----------------------------------------------
+    # What a subclass calls.
 
     def emit(self, item):
         if self.sink.add(item):
@@ -82,7 +82,7 @@ class Adapter:
         """Sleep, but wake at once when asked to stop. True means stop."""
         return self.stopping.wait(max(0.0, seconds))
 
-    # -- the loop --------------------------------------------------------------
+    # The loop.
 
     def start(self):
         self.thread = threading.Thread(target=self._loop, name=self.platform,
