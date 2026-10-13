@@ -1,3 +1,6 @@
 * text=auto eol=lf
 *.png binary
 *.gif binary
+# Recorded wire bytes: kept exactly as the platform sends them, CRLF and all.
+tests/fixtures/*.txt binary
+tests/fixtures/*.sse binary
