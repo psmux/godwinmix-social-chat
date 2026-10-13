@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:gmx="https://godwinmix.dev/ns/template" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <metadata>
+    <gmx:template title="Social Chat comment strap" description="One viewer comment as a one line lower third across the bottom"/>
+    <gmx:field name="author" label="Author" default="pixel_otter"/>
+    <gmx:field name="message" label="Comment" default="what camera are you using for the wide shot?"/>
+    <gmx:field name="tag" label="Tag (QUESTION, an amount)" default="QUESTION"/>
+    <gmx:field name="platform" label="Platform" default="TWITCH"/>
+    <gmx:field name="platform_colour" label="Platform colour" type="color" default="#9146ff"/>
+    <gmx:field name="accent" label="Accent colour" type="color" default="#f5b301"/>
+    <gmx:field name="panel" label="Panel colour" type="color" default="#0d1324"/>
+    <gmx:field name="text" label="Text colour" type="color" default="#f8fafc"/>
+  </metadata>
+  <defs>
+    <style>
+      .type { font-family: Inter, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, 'DejaVu Sans', 'Liberation Sans', sans-serif; }
+    </style>
+    <filter id="shadow" x="-5%" y="-40%" width="110%" height="180%">
+      <feGaussianBlur stdDeviation="12"/>
+    </filter>
+  </defs>
+  <rect x="104" y="880" width="1712" height="118" rx="16" fill="#000000" opacity="0.45" filter="url(#shadow)"/>
+  <rect x="96" y="868" width="1728" height="118" rx="16" fill="{{panel}}" opacity="0.94"/>
+  <rect x="96" y="868" width="220" height="118" rx="16" fill="{{platform_colour}}"/>
+  <rect x="290" y="868" width="26" height="118" fill="{{platform_colour}}"/>
+  <text class="type" x="206" y="938" font-size="28" font-weight="800" letter-spacing="2" fill="#ffffff" text-anchor="middle" data-fit-width="190">{{platform}}</text>
+  <text class="type" x="348" y="912" font-size="32" font-weight="800" fill="{{accent}}" data-fit-width="1200">{{author}}</text>
+  <text class="type" x="1796" y="912" font-size="24" font-weight="700" letter-spacing="3" fill="{{accent}}" text-anchor="end" data-fit-width="240">{{tag}}</text>
+  <text class="type" x="348" y="962" font-size="40" font-weight="500" fill="{{text}}" data-fit-width="1448">{{message}}</text>
+</svg>

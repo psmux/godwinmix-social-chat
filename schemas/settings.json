@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Social Chat",
+  "description": "Where to read live comments from, and how they go on air. Keys and tokens are stored sealed and never shown back.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "youtube_video": {
+      "type": "string",
+      "title": "YouTube stream",
+      "description": "The live stream's address (https://www.youtube.com/watch?v=...), its 11 character id, or the channel's @handle. A stream address costs 1 quota unit to look up; a channel costs 100. Leave empty with OAuth to find your own live stream.",
+      "default": "",
+      "examples": [
+        "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "@ourchannel"
+      ]
+    },
+    "youtube_api_key": {
+      "type": "string",
+      "title": "YouTube API key",
+      "description": "An API key from a Google Cloud project with the YouTube Data API v3 enabled. Stored sealed; never shown back.",
+      "default": "",
+      "examples": [
+        "AIzaSyExampleExampleExampleExample123"
+      ],
+      "format": "secret"
+    },
+    "youtube_oauth_token": {
+      "type": "string",
+      "title": "YouTube OAuth access token",
+      "description": "Optional. An OAuth access token with the youtube.readonly scope, for a private or unlisted stream, or to find your own live stream. It expires in an hour unless the three refresh fields are set too.",
+      "default": "",
+      "examples": [
+        "ya29.example"
+      ],
+      "format": "secret"
+    },
+    "youtube_client_id": {
+      "type": "string",
+      "title": "YouTube OAuth client id",
+      "description": "Optional. With the client secret and the refresh token, lets the plugin renew the OAuth token itself.",
+      "default": "",
+      "examples": [
+        "1234567890-abc.apps.googleusercontent.com"
+      ],
+      "x-gmx-group": "YouTube OAuth"
+    },
+    "youtube_client_secret": {
+      "type": "string",
+      "title": "YouTube OAuth client secret",
+      "description": "Optional. The OAuth client's secret.",
+      "default": "",
+      "examples": [
+        "GOCSPX-example"
+      ],
+      "format": "secret",
+      "x-gmx-group": "YouTube OAuth"
+    },
+    "youtube_refresh_token": {
+      "type": "string",
+      "title": "YouTube OAuth refresh token",
+      "description": "Optional. A refresh token for the client above.",
+      "default": "",
+      "examples": [
+        "1//0example"
+      ],
+      "format": "secret",
+      "x-gmx-group": "YouTube OAuth"
+    },
+    "youtube_min_poll_seconds": {
+      "type": "integer",
+      "title": "YouTube slowest poll",
+      "description": "Never read the YouTube chat more often than this, whatever YouTube suggests. Each read costs 5 quota units out of 10,000 a day, so 5 seconds lasts about 2.8 hours of chat and 10 seconds about 5.5.",
+      "default": 5,
+      "examples": [
+        5,
+        10
+      ],
+      "minimum": 1,
+      "maximum": 120
+    },
+    "twitch_channels": {
+      "type": "string",
+      "title": "Twitch channels",
+      "description": "One or more Twitch channel names, separated by commas. Read anonymously; no account or key is needed.",
+      "default": "",
+      "examples": [
+        "ourchannel",
+        "ourchannel, friendschannel"
+      ]
+    },
+    "facebook_live_video": {
+      "type": "string",
+      "title": "Facebook live video",
+      "description": "The live video's address or number. Leave empty to use whatever the Page is streaming now.",
+      "default": "",
+      "examples": [
+        "https://www.facebook.com/ourpage/videos/1234567890123456"
+      ]
+    },
+    "facebook_page_token": {
+      "type": "string",
+      "title": "Facebook Page access token",
+      "description": "A Page access token for the Page that is live, with pages_read_engagement and pages_read_user_content. Stored sealed; never shown back.",
+      "default": "",
+      "examples": [
+        "EAAexample"
+      ],
+      "format": "secret"
+    },
+    "facebook_mode": {
+      "type": "string",
+      "title": "Facebook connection",
+      "description": "stream holds one connection open and Facebook pushes comments; poll asks every few seconds. stream falls back to poll by itself when Facebook refuses it.",
+      "default": "stream",
+      "examples": [
+        "stream",
+        "poll"
+      ],
+      "enum": [
+        "stream",
+        "poll"
+      ]
+    },
+    "facebook_poll_seconds": {
+      "type": "integer",
+      "title": "Facebook poll interval",
+      "description": "Seconds between reads when polling.",
+      "default": 5,
+      "examples": [
+        5,
+        10
+      ],
+      "minimum": 2,
+      "maximum": 120
+    },
+    "webhook_enabled": {
+      "type": "boolean",
+      "title": "Accept comments by webhook",
+      "description": "Listen for comments POSTed as JSON by another tool or platform.",
+      "default": false,
+      "examples": [
+        false,
+        true
+      ]
+    },
+    "webhook_bind": {
+      "type": "string",
+      "title": "Webhook address",
+      "description": "The address the webhook listens on. 127.0.0.1 takes posts from this machine only; 0.0.0.0 from the network, so set a secret.",
+      "default": "127.0.0.1",
+      "examples": [
+        "127.0.0.1",
+        "0.0.0.0"
+      ]
+    },
+    "webhook_port": {
+      "type": "integer",
+      "title": "Webhook port",
+      "description": "The port the webhook listens on.",
+      "default": 8790,
+      "examples": [
+        8790
+      ],
+      "minimum": 1024,
+      "maximum": 65535
+    },
+    "webhook_secret": {
+      "type": "string",
+      "title": "Webhook secret",
+      "description": "Optional. When set, a post must carry it in the X-Social-Chat-Secret header or as a Bearer token.",
+      "default": "",
+      "examples": [
+        "change-me-long-random"
+      ],
+      "format": "secret"
+    },
+    "x_enabled": {
+      "type": "boolean",
+      "title": "X (Twitter)",
+      "description": "X's API is paid; this adapter is a stub that says so. Send X replies in through the webhook instead.",
+      "default": false,
+      "examples": [
+        false
+      ]
+    },
+    "practice_mode": {
+      "type": "boolean",
+      "title": "Practice mode",
+      "description": "Send made up comments every few seconds, to rehearse with the panel and the on air card.",
+      "default": false,
+      "examples": [
+        false,
+        true
+      ]
+    },
+    "keep": {
+      "type": "integer",
+      "title": "Comments kept",
+      "description": "How many comments the list holds before the oldest go.",
+      "default": 500,
+      "examples": [
+        500,
+        1000
+      ],
+      "minimum": 50,
+      "maximum": 5000
+    },
+    "question_colour": {
+      "type": "string",
+      "title": "Question colour",
+      "description": "The colour that marks a comment asking a question.",
+      "default": "#f5b301",
+      "examples": [
+        "#f5b301",
+        "#22d3ee"
+      ],
+      "format": "color"
+    },
+    "card_style": {
+      "type": "string",
+      "title": "On air style",
+      "description": "card is a box with the picture, the name and up to three lines; strap is a one line lower third.",
+      "default": "card",
+      "examples": [
+        "card",
+        "strap"
+      ],
+      "enum": [
+        "card",
+        "strap"
+      ]
+    }
+  }
+}

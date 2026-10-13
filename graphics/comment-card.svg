@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:gmx="https://godwinmix.dev/ns/template" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <metadata>
+    <gmx:template title="Social Chat comment card" description="One viewer comment with their picture, name, platform and up to three lines, bottom left inside title safe"/>
+    <gmx:field name="author" label="Author" default="Priya N."/>
+    <gmx:field name="line1" label="Comment, line 1" default="Greetings from Leeds! The sound is so much"/>
+    <gmx:field name="line2" label="Comment, line 2" default="better this week, and the new camera angle"/>
+    <gmx:field name="line3" label="Comment, line 3" default="really works."/>
+    <gmx:field name="tag" label="Tag (QUESTION, an amount)" default=""/>
+    <gmx:field name="platform" label="Platform" default="YOUTUBE"/>
+    <gmx:field name="platform_colour" label="Platform colour" type="color" default="#ff0033"/>
+    <gmx:field name="initials" label="Initials, under the picture" default="PN"/>
+    <gmx:field name="avatar" label="Picture (a data URI)" default="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="/>
+    <gmx:field name="accent" label="Accent colour" type="color" default="#f5b301"/>
+    <gmx:field name="panel" label="Panel colour" type="color" default="#0d1324"/>
+    <gmx:field name="text" label="Text colour" type="color" default="#f8fafc"/>
+  </metadata>
+  <defs>
+    <style>
+      .type { font-family: Inter, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, 'DejaVu Sans', 'Liberation Sans', sans-serif; }
+    </style>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.10"/>
+      <stop offset="0.45" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-20%" width="120%" height="150%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <clipPath id="face"><circle cx="196" cy="774" r="54"/></clipPath>
+  </defs>
+  <rect x="106" y="706" width="1080" height="300" rx="26" fill="#000000" opacity="0.45" filter="url(#shadow)"/>
+  <rect x="96" y="690" width="1100" height="300" rx="26" fill="{{panel}}" opacity="0.94"/>
+  <rect x="96" y="690" width="1100" height="300" rx="26" fill="url(#sheen)"/>
+  <rect x="96" y="690" width="12" height="300" rx="6" fill="{{platform_colour}}"/>
+  <circle cx="196" cy="774" r="60" fill="{{platform_colour}}" opacity="0.35"/>
+  <circle cx="196" cy="774" r="54" fill="{{platform_colour}}"/>
+  <text class="type" x="196" y="792" font-size="46" font-weight="800" fill="#ffffff" text-anchor="middle">{{initials}}</text>
+  <image href="{{avatar}}" x="142" y="720" width="108" height="108" clip-path="url(#face)" preserveAspectRatio="xMidYMid slice"/>
+  <text class="type" x="276" y="768" font-size="44" font-weight="800" fill="{{text}}" data-fit-width="620">{{author}}</text>
+  <text class="type" x="278" y="810" font-size="25" font-weight="700" letter-spacing="3" fill="{{accent}}" data-fit-width="620">{{tag}}</text>
+  <rect x="936" y="728" width="224" height="46" rx="23" fill="{{platform_colour}}"/>
+  <text class="type" x="1048" y="760" font-size="24" font-weight="800" letter-spacing="2" fill="#ffffff" text-anchor="middle" data-fit-width="196">{{platform}}</text>
+  <text class="type" x="136" y="878" font-size="38" font-weight="500" fill="{{text}}" data-fit-width="1030">{{line1}}</text>
+  <text class="type" x="136" y="924" font-size="38" font-weight="500" fill="{{text}}" data-fit-width="1030">{{line2}}</text>
+  <text class="type" x="136" y="970" font-size="38" font-weight="500" fill="{{text}}" data-fit-width="1030">{{line3}}</text>
+</svg>

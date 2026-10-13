@@ -1,0 +1,97 @@
+[plugin]
+name = "social-chat"
+version = "1.0.0"
+api = 1
+description = "Live comments from YouTube, Twitch, Facebook and any platform that can POST a webhook, merged into one panel in the mixer, with filters, search, pins, local bans, highlighted questions and a button that puts a comment on air as a card or a lower third."
+license = "MIT"
+authors = ["psmux"]
+repository = "https://github.com/psmux/godwinmix-social-chat"
+platforms = ["linux-x86_64", "linux-aarch64", "macos-aarch64", "macos-x86_64", "windows-x86_64"]
+placements = ["sidecar"]
+process = "singleton"
+
+[run]
+python = "main.py"
+
+[[provides]]
+kind = "service"
+id = "chat"
+settings = "schemas/settings.json"
+skill = "skills/chat/SKILL.md"
+
+[[provides]]
+kind = "panel"
+id = "panel"
+panel = { kind = "iframe", entry = "ui/panel.html", slots = ["sidebar"] }
+
+[[tools]]
+name = "comments"
+description = "The merged live comments from every connected platform, oldest first, with each platform's connection state, the pins and the local bans. Pass after (a sequence number from the last answer) to get only what changed. Use when asked what the audience is saying, or before putting a comment on air. Example: comments {\"after\": 0, \"limit\": 50} returns {seq, added: [{id: 'twitch:1a2b', platform: 'twitch', author: 'pixel_otter', text: 'what camera is that?', question: true}], removed: [], statuses: [...]}."
+input = "schemas/tools/comments.json"
+annotations = { readOnlyHint = true, destructiveHint = false, idempotentHint = true, openWorldHint = false }
+
+[[tools]]
+name = "status"
+description = "Each platform's connection state in words, with the next step when it is failing, and the on air card. Use when chat is not arriving. Example: status {} returns {statuses: [{platform: 'youtube', state: 'failing', detail: 'YouTube refused the API key', next: 'Check the key in Settings'}]}."
+input = "schemas/tools/empty.json"
+annotations = { readOnlyHint = true, destructiveHint = false, idempotentHint = true, openWorldHint = false }
+
+[[tools]]
+name = "settings"
+description = "The plugin's settings with every key and token masked. Use before changing a setting. Example: settings {} returns {settings: {twitch_channels: 'ourchannel', youtube_api_key: 'stored, ending 9xQk'}}."
+input = "schemas/tools/empty.json"
+annotations = { readOnlyHint = true, destructiveHint = false, idempotentHint = true, openWorldHint = false }
+
+[[tools]]
+name = "save_settings"
+description = "Change settings and reconnect only the platforms they touch. A secret sent as an empty string is kept as it was. Use when the operator gives a channel, a stream address or a key. Example: save_settings {\"values\": {\"twitch_channels\": \"ourchannel\", \"youtube_video\": \"https://www.youtube.com/watch?v=dQw4w9WgXcQ\"}}."
+input = "schemas/tools/save_settings.json"
+annotations = { readOnlyHint = false, destructiveHint = false, idempotentHint = true, openWorldHint = true }
+
+[[tools]]
+name = "reconnect"
+description = "Drop and reopen one platform's connection, or all of them. Use after fixing what a failing status said. Example: reconnect {\"platform\": \"youtube\"}."
+input = "schemas/tools/reconnect.json"
+annotations = { readOnlyHint = false, destructiveHint = false, idempotentHint = true, openWorldHint = true }
+
+[[tools]]
+name = "pin"
+description = "Pin a comment to the top of the panel, or unpin it. Local only. Example: pin {\"id\": \"youtube:LCC.abc\", \"pinned\": true}."
+input = "schemas/tools/pin.json"
+annotations = { readOnlyHint = false, destructiveHint = false, idempotentHint = true, openWorldHint = false }
+
+[[tools]]
+name = "hide"
+description = "Hide one comment in the panel, or show it again. Local only; nothing is deleted on the platform. Example: hide {\"id\": \"twitch:1a2b\", \"hidden\": true}."
+input = "schemas/tools/hide.json"
+annotations = { readOnlyHint = false, destructiveHint = false, idempotentHint = true, openWorldHint = false }
+
+[[tools]]
+name = "ban"
+description = "Ban the author of a comment in this mixer: their comments are removed from the list and new ones are dropped. Local only; the platform is not told. Unban with banned false and the key from the moderation list. Example: ban {\"id\": \"twitch:1a2b\", \"banned\": true}."
+input = "schemas/tools/ban.json"
+annotations = { readOnlyHint = false, destructiveHint = false, idempotentHint = true, openWorldHint = false }
+
+[[tools]]
+name = "card_fields"
+description = "The template address and the filled in fields that put one comment on air, and mark it as the comment on air. The caller then adds or updates the source social-chat-card with source.add or source.set and shows it on the programme scene. Use when asked to show a comment on screen. Example: card_fields {\"id\": \"youtube:LCC.abc\", \"style\": \"card\"} returns {source: 'social-chat-card', uri: 'template:/.../comment-card.svg', fields: {author, line1, line2, line3, platform}}."
+input = "schemas/tools/card_fields.json"
+annotations = { readOnlyHint = false, destructiveHint = false, idempotentHint = true, openWorldHint = true }
+
+[[tools]]
+name = "card_off"
+description = "Record that no comment is on air. The caller hides the social-chat-card item itself. Example: card_off {}."
+input = "schemas/tools/empty.json"
+annotations = { readOnlyHint = false, destructiveHint = false, idempotentHint = true, openWorldHint = false }
+
+[[tools]]
+name = "avatars"
+description = "Profile pictures as small data URIs, for a page that may not load pictures from other sites. Example: avatars {\"urls\": [\"https://yt3.ggpht.com/abc=s88\"]}."
+input = "schemas/tools/avatars.json"
+annotations = { readOnlyHint = true, destructiveHint = false, idempotentHint = true, openWorldHint = true }
+
+[[tools]]
+name = "test_comment"
+description = "Put one comment in the list by hand, to try the panel and the on air card with no live chat. Example: test_comment {\"author\": \"Producer\", \"text\": \"Is the sound OK at the back?\"}."
+input = "schemas/tools/test_comment.json"
+annotations = { readOnlyHint = false, destructiveHint = false, idempotentHint = false, openWorldHint = false }

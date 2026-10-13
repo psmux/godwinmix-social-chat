@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Social Chat</title>
+<link rel="stylesheet" href="chat.css">
+</head>
+<body>
+<div id="app" class="app">
+  <header class="bar">
+    <div class="chips" id="chips"></div>
+    <button class="icon-btn" id="gear" title="Settings">&#9881;</button>
+  </header>
+  <div class="tools">
+    <input id="search" type="search" placeholder="Search comments or names" autocomplete="off">
+    <button class="toggle" id="questions" title="Only questions">?</button>
+  </div>
+  <div class="problems" id="problems"></div>
+  <div class="problems" id="notice"></div>
+  <section class="pins" id="pins"></section>
+  <main class="list" id="list"><div class="empty" id="empty">Connecting to the plugin...</div></main>
+  <button class="more" id="more" hidden>New comments below</button>
+  <footer class="onair" id="onair">
+    <div class="onair-text" id="onair-text">Nothing on air</div>
+    <select id="style" title="How a comment goes on air">
+      <option value="card">Card</option>
+      <option value="strap">Lower third</option>
+    </select>
+    <button class="btn danger" id="off" disabled>Take off</button>
+  </footer>
+  <section class="settings" id="settings" hidden></section>
+</div>
+<script type="module" src="chat.js"></script>
+</body>
+</html>

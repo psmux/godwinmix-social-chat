@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "after": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "The seq from the last answer; 0 for everything."
+    },
+    "epoch": {
+      "type": "string",
+      "description": "The epoch from the last answer. A different one means the plugin restarted and everything is sent again."
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000,
+      "description": "At most this many comments."
+    }
+  }
+}

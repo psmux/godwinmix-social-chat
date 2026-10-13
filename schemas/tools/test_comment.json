@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "author": {
+      "type": "string"
+    },
+    "text": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    }
+  }
+}

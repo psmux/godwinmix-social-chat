@@ -1,0 +1,7 @@
+{
+  "id": "social-chat/panel",
+  "title": "Social Chat",
+  "slots": ["sidebar", "main"],
+  "tier": "sandboxed",
+  "height": 560
+}

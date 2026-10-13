@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "platform": {
+      "type": "string",
+      "enum": [
+        "youtube",
+        "twitch",
+        "facebook",
+        "webhook",
+        "x",
+        "practice"
+      ],
+      "description": "One platform; leave out for all."
+    }
+  }
+}

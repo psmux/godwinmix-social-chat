@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "A comment id from comments, such as twitch:1a2b."
+    },
+    "style": {
+      "type": "string",
+      "enum": [
+        "card",
+        "strap"
+      ]
+    }
+  },
+  "required": [
+    "id"
+  ]
+}
