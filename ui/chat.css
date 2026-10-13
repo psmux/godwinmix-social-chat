@@ -81,11 +81,11 @@ button, input, select { font: inherit; color: inherit; }
 .actions button:hover { background: var(--accent); color: #fff; }
 .actions button.air { color: var(--live); font-weight: 700; }
 
-.more { position: absolute; left: 50%; transform: translateX(-50%); bottom: 54px; border: 0; border-radius: 99px;
+.more { position: absolute; left: 50%; transform: translateX(-50%); bottom: 10px; border: 0; border-radius: 99px;
         padding: 4px 12px; background: var(--accent); color: #fff; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,.4); }
 
-.onair { display: flex; align-items: center; gap: 6px; padding: 6px 8px; background: var(--panel);
-         border-top: 1px solid var(--line); }
+.onair { display: flex; align-items: center; gap: 6px; padding: 5px 8px; background: var(--panel);
+         border-bottom: 1px solid var(--line); }
 .onair-text { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--dim); }
 .onair.live .onair-text { color: var(--text); }
 .onair.live .onair-text::before { content: "ON AIR"; background: var(--live); color: #fff; font-weight: 800;

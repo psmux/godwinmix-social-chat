@@ -169,7 +169,6 @@ function wire() {
 
 async function boot() {
   client = await connectPanel();
-  if (client.resize) client.resize(560);
   wire();
   poll();
 }

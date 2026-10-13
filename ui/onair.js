@@ -77,13 +77,14 @@ export async function putOnAir(client, id, style) {
       await client.call("scene.item.set", { scene: scene.name, item: name, props: { visible: false } });
     }
   }
-  const item = await ensureItem(client, scene, card.style);
-  if (item.visible) {
+  const up = itemIn(scene, ITEM[card.style]);
+  if (up && up.visible) {
     // Something is already up: let it go out, then bring the new words in.
-    await client.call("scene.item.set", { scene: scene.name, item: item.name, props: { visible: false } });
+    await client.call("scene.item.set", { scene: scene.name, item: up.name, props: { visible: false } });
     await sleep(EXIT.duration_ms + 50);
   }
   await ensureSource(client, card);
+  await ensureItem(client, scene, card.style);
   await client.call("scene.item.set", { scene: scene.name, item: ITEM[card.style], props: { visible: true } });
   return card;
 }

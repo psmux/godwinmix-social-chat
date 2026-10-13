@@ -3,5 +3,5 @@
   "title": "Social Chat",
   "slots": ["sidebar", "main"],
   "tier": "sandboxed",
-  "height": 560
+  "height": 420
 }
