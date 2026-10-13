@@ -1,0 +1,17 @@
+{
+  "kind": "youtube#liveChatMessageListResponse",
+  "pollingIntervalMillis": 10000,
+  "offlineAt": "2026-10-13T19:30:00Z",
+  "items": [
+    {
+      "kind": "youtube#liveChatMessage",
+      "id": "LCC.end",
+      "snippet": {
+        "type": "chatEndedEvent",
+        "publishedAt": "2026-10-13T19:30:00Z",
+        "hasDisplayContent": false
+      },
+      "authorDetails": {}
+    }
+  ]
+}

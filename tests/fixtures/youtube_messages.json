@@ -1,0 +1,155 @@
+{
+  "kind": "youtube#liveChatMessageListResponse",
+  "etag": "sample-etag",
+  "nextPageToken": "GO-sample-next-page",
+  "pollingIntervalMillis": 6012,
+  "pageInfo": {
+    "totalResults": 7,
+    "resultsPerPage": 7
+  },
+  "items": [
+    {
+      "kind": "youtube#liveChatMessage",
+      "etag": "e1",
+      "id": "LCC.sample-text-1",
+      "snippet": {
+        "type": "textMessageEvent",
+        "liveChatId": "Cg0KC3NhbXBsZS12aWQ",
+        "authorChannelId": "UCsampleAuthorAAAAAAAAAA",
+        "publishedAt": "2026-10-13T18:00:01.123456+00:00",
+        "hasDisplayContent": true,
+        "displayMessage": "Hello from Leeds!",
+        "textMessageDetails": {
+          "messageText": "Hello from Leeds!"
+        }
+      },
+      "authorDetails": {
+        "channelId": "UCsampleAuthorAAAAAAAAAA",
+        "channelUrl": "http://www.youtube.com/channel/UCsampleAuthorAAAAAAAAAA",
+        "displayName": "Priya N.",
+        "profileImageUrl": "https://yt4.ggpht.com/sample-avatar=s88-c-k-c0x00ffffff-no-rj",
+        "isVerified": false,
+        "isChatOwner": false,
+        "isChatSponsor": true,
+        "isChatModerator": false
+      }
+    },
+    {
+      "kind": "youtube#liveChatMessage",
+      "id": "LCC.sample-super-2",
+      "snippet": {
+        "type": "superChatEvent",
+        "liveChatId": "Cg0KC3NhbXBsZS12aWQ",
+        "authorChannelId": "UCsampleSuperBBBBBBBBBBBB",
+        "publishedAt": "2026-10-13T18:00:03Z",
+        "hasDisplayContent": true,
+        "displayMessage": "$5.00 from Dev Okafor: Can you explain step two again?",
+        "superChatDetails": {
+          "amountMicros": "5000000",
+          "currency": "USD",
+          "amountDisplayString": "$5.00",
+          "userComment": "Can you explain step two again?",
+          "tier": 2
+        }
+      },
+      "authorDetails": {
+        "channelId": "UCsampleSuperBBBBBBBBBBBB",
+        "displayName": "Dev Okafor",
+        "profileImageUrl": "https://yt4.ggpht.com/sample-b=s88",
+        "isChatOwner": false,
+        "isChatModerator": true,
+        "isChatSponsor": false,
+        "isVerified": false
+      }
+    },
+    {
+      "kind": "youtube#liveChatMessage",
+      "id": "LCC.sample-sticker-3",
+      "snippet": {
+        "type": "superStickerEvent",
+        "publishedAt": "2026-10-13T18:00:02Z",
+        "hasDisplayContent": true,
+        "displayMessage": "Super Sticker of $2.00 from Hana",
+        "superStickerDetails": {
+          "superStickerMetadata": {
+            "stickerId": "s1",
+            "altText": "A dancing cat",
+            "language": "en"
+          },
+          "amountMicros": "2000000",
+          "currency": "USD",
+          "amountDisplayString": "$2.00",
+          "tier": 1
+        }
+      },
+      "authorDetails": {
+        "channelId": "UCsampleHanaCCCCCCCCCCCCC",
+        "displayName": "Hana Sato"
+      }
+    },
+    {
+      "kind": "youtube#liveChatMessage",
+      "id": "LCC.sample-member-4",
+      "snippet": {
+        "type": "newSponsorEvent",
+        "publishedAt": "2026-10-13T18:00:04Z",
+        "hasDisplayContent": true,
+        "displayMessage": "Welcome to Members!"
+      },
+      "authorDetails": {
+        "channelId": "UCsampleLuisDDDDDDDDDDDDD",
+        "displayName": "Luis Ortega",
+        "isChatSponsor": true
+      }
+    },
+    {
+      "kind": "youtube#liveChatMessage",
+      "id": "LCC.sample-deleted-5",
+      "snippet": {
+        "type": "messageDeletedEvent",
+        "publishedAt": "2026-10-13T18:00:05Z",
+        "hasDisplayContent": false,
+        "messageDeletedDetails": {
+          "deletedMessageId": "LCC.sample-old-0"
+        }
+      },
+      "authorDetails": {
+        "channelId": "UCsampleModEEEEEEEEEEEEEE",
+        "displayName": "A moderator"
+      }
+    },
+    {
+      "kind": "youtube#liveChatMessage",
+      "id": "LCC.sample-banned-6",
+      "snippet": {
+        "type": "userBannedEvent",
+        "publishedAt": "2026-10-13T18:00:06Z",
+        "hasDisplayContent": true,
+        "displayMessage": "Spammer was banned",
+        "userBannedDetails": {
+          "bannedUserDetails": {
+            "channelId": "UCsampleSpamFFFFFFFFFFFFF",
+            "displayName": "Spammer"
+          },
+          "banType": "permanent"
+        }
+      },
+      "authorDetails": {
+        "channelId": "UCsampleModEEEEEEEEEEEEEE",
+        "displayName": "A moderator"
+      }
+    },
+    {
+      "kind": "youtube#liveChatMessage",
+      "id": "LCC.sample-tombstone-7",
+      "snippet": {
+        "type": "tombstone",
+        "publishedAt": "2026-10-13T18:00:07Z",
+        "hasDisplayContent": false
+      },
+      "authorDetails": {
+        "displayName": "Gone"
+      }
+    }
+  ]
+}

@@ -17,6 +17,12 @@
       "minimum": 1,
       "maximum": 1000,
       "description": "At most this many comments."
+    },
+    "wait_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3500,
+      "description": "When nothing has changed, wait up to this long for something to, before answering. Saves calls on a quiet chat."
     }
   }
 }

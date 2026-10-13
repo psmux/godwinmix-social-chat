@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "id": "1234567890123456",
+      "status": "LIVE",
+      "title": "Choir rehearsal"
+    },
+    {
+      "id": "1234567890000000",
+      "status": "VOD",
+      "title": "Last week"
+    }
+  ],
+  "paging": {
+    "cursors": {
+      "before": "a",
+      "after": "b"
+    }
+  }
+}

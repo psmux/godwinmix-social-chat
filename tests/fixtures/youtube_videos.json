@@ -1,0 +1,22 @@
+{
+  "kind": "youtube#videoListResponse",
+  "items": [
+    {
+      "kind": "youtube#video",
+      "id": "dQw4w9WgXcQ",
+      "snippet": {
+        "title": "Sunday service, live",
+        "channelId": "UCsampleChannelGGGGGGGGGG"
+      },
+      "liveStreamingDetails": {
+        "actualStartTime": "2026-10-13T17:55:00Z",
+        "concurrentViewers": "412",
+        "activeLiveChatId": "Cg0KC2RRdzR3OVdnWGNR"
+      }
+    }
+  ],
+  "pageInfo": {
+    "totalResults": 1,
+    "resultsPerPage": 1
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "comments": [
+    {
+      "platform": "TikTok",
+      "id": "7301",
+      "author": "Sam",
+      "text": "hello from tiktok",
+      "time": "2026-10-13T18:00:00Z",
+      "avatar": "https://p16-sign.example/sam.jpg"
+    },
+    {
+      "source": "kick",
+      "user": {
+        "name": "streamfan"
+      },
+      "message": "first!",
+      "timestamp": 1791914400
+    },
+    {
+      "network": "instagram",
+      "username": "ig_viewer",
+      "comment": "what song is this?"
+    },
+    {
+      "platform": "kick",
+      "user": "nobody",
+      "text": ""
+    },
+    "not an object"
+  ]
+}

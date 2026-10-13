@@ -14,7 +14,7 @@ import threading
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ROOT)
 
-from social_chat import rpc, tools  # noqa: E402
+from social_chat import panel_files, rpc, tools  # noqa: E402
 from social_chat.service import Chat  # noqa: E402
 
 NAME = "social-chat"
@@ -82,6 +82,17 @@ def dispatch(chat, message):
     return True
 
 
+def show_panel():
+    try:
+        written = panel_files.mirror(ROOT)
+    except OSError as e:
+        rpc.log("warn", "could not copy the panel to where the mixer's page looks: %s. "
+                "The chat still runs; the panel will not show until it can." % e)
+        return
+    if written:
+        rpc.log("info", "copied %d panel files to %s" % (written, panel_files.target_for(ROOT)))
+
+
 def main():
     chat = Chat(ROOT)
     rpc.send({"jsonrpc": "2.0", "id": 0, "method": "initialize",
@@ -100,6 +111,7 @@ def main():
             chat.apply(message["result"].get("params") or {})
             rpc.send({"jsonrpc": "2.0", "method": "initialized", "params": {}})
             rpc.log("info", "social-chat ready: %s" % chat.health()["detail"])
+            show_panel()
         elif message.get("id") == 0 and "error" in message:
             rpc.log("error", "the core refused the handshake: %s" % message["error"])
             break

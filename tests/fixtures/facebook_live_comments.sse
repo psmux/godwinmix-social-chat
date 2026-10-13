@@ -1,0 +1,9 @@
+: ok
+
+data: {"id":"1234567890123456_9100000000000001","message":"Watching with the whole family","created_time":"2026-10-13T18:01:00+0000","from":{"id":"7000000000000002","name":"Marta Lindqvist"}}
+
+data: not json at all
+
+data: {"id":"1234567890123456_9100000000000002",
+data: "message":"Shared this with our choir","created_time":"2026-10-13T18:01:02+0000"}
+

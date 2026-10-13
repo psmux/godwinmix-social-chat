@@ -1,0 +1,10 @@
+:tmi.twitch.tv 001 justinfan12345 :Welcome, GLHF!
+@badge-info=subscriber/14;badges=subscriber/12,premium/1;color=#1E90FF;display-name=pixel_otter;emotes=;first-msg=0;flags=;id=5a2c4f1e-0d4b-4c8a-9d1e-7f3a2b1c0d9e;mod=0;returning-chatter=0;room-id=12826;subscriber=1;tmi-sent-ts=1791914401123;turbo=0;user-id=40404040;user-type= :pixel_otter!pixel_otter@pixel_otter.tmi.twitch.tv PRIVMSG #ourchannel :what camera are you using for the wide shot?
+@badges=broadcaster/1;color=;display-name=OurChannel;id=6b3d5a2f-1e5c-4d9b-8e2f-8a4b3c2d1e0f;mod=0;room-id=12826;tmi-sent-ts=1791914402000;user-id=12826 :ourchannel!ourchannel@ourchannel.tmi.twitch.tv PRIVMSG #ourchannel :ACTION waves at everyone
+@badges=;bits=100;color=#FF4500;display-name=QuietKestrel;id=7c4e6b3a-2f6d-4e0c-9f3a-9b5c4d3e2f1a;room-id=12826;tmi-sent-ts=1791914403000;user-id=50505050 :quietkestrel!quietkestrel@quietkestrel.tmi.twitch.tv PRIVMSG #ourchannel :Cheer100 great stream here
+@badges=subscriber/0;color=#8A2BE2;display-name=Lofi_Gardener;id=8d5f7c4b-3a7e-4f1d-8a4b-0c6d5e4f3a2b;login=lofi_gardener;msg-id=resub;msg-param-cumulative-months=6;room-id=12826;system-msg=Lofi_Gardener\ssubscribed\sat\sTier\s1.\sThey\shave\ssubscribed\sfor\s6\smonths!;tmi-sent-ts=1791914404000;user-id=60606060 :tmi.twitch.tv USERNOTICE #ourchannel :six months already
+@login=pixel_otter;room-id=;target-msg-id=5a2c4f1e-0d4b-4c8a-9d1e-7f3a2b1c0d9e;tmi-sent-ts=1791914405000 :tmi.twitch.tv CLEARMSG #ourchannel :what camera are you using for the wide shot?
+@ban-duration=600;room-id=12826;target-user-id=50505050;tmi-sent-ts=1791914406000 :tmi.twitch.tv CLEARCHAT #ourchannel :quietkestrel
+@room-id=12826;tmi-sent-ts=1791914407000 :tmi.twitch.tv CLEARCHAT #ourchannel
+PING :tmi.twitch.tv
+:tmi.twitch.tv RECONNECT

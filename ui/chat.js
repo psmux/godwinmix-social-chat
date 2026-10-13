@@ -58,7 +58,7 @@ function paint() {
   const shown = view.order.filter((c) => matches(c, view)).slice(-MAX_SHOWN);
   const atBottom = list.scrollHeight - list.scrollTop - list.clientHeight < 40;
   list.innerHTML = shown.length ? shown.map((c) => rowHtml(c, view)).join("")
-    : `<div class="empty">${view.order.length ? "No comment matches." : "No comments yet. They appear here as they arrive."}</div>`);
+    : `<div class="empty">${view.order.length ? "No comment matches." : "No comments yet. They appear here as they arrive."}</div>`;
   if (stuck || atBottom) list.scrollTop = list.scrollHeight;
   $("more").hidden = stuck || atBottom;
   const bar = $("onair");
@@ -80,18 +80,26 @@ async function fetchPictures() {
   view.dirty = true;
 }
 
+// A long poll: the plugin holds the call for up to three seconds when nothing
+// has changed, so a quiet chat costs one call every three seconds. After an
+// answer that did carry comments the next call waits a second and a half, so
+// a busy chat arrives in batches rather than as a call a second. Each call is
+// a line in the mixer's session log, which is why this is not faster.
 async function poll() {
+  let pause = 1500;
   try {
-    absorb(await tool(client, "comments", { after: view.seq, epoch: view.epoch }));
+    const before = view.seq;
+    absorb(await tool(client, "comments", { after: view.seq, epoch: view.epoch, wait_ms: 3000 }));
     if (view.down) { view.down = false; notice(""); }
-    $("empty") && view.order.length === 0 && view.statuses.length && ($("empty").textContent = "No comments yet.");
+    if (view.seq === before) pause = 0;
     fetchPictures();
   } catch (e) {
     view.down = true;
+    pause = 3000;
     notice(`<div class="problem"><b>The plugin is not answering</b>${esc(e.message || e)} <span class="next">Check that social-chat is running in Plugins; this retries by itself.</span></div>`, true);
   }
   if (view.dirty) paint();
-  setTimeout(poll, document.hidden ? 5000 : 1000);
+  setTimeout(poll, document.hidden ? 5000 : pause);
 }
 
 let noticeTimer;

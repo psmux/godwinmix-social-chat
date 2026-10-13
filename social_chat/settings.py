@@ -17,7 +17,7 @@ import json
 import os
 import tempfile
 
-from . import redact
+from . import redact, seal, vault
 
 SENTINEL = "__secret__"
 
@@ -71,6 +71,25 @@ def coerce(key, value):
         return default
 
 
+class SettingsError(Exception):
+    pass
+
+
+def secret_of(key, value):
+    """A key or token from the panel: sealed, or null to forget it."""
+    if value is None:
+        return None
+    if isinstance(value, dict) and isinstance(value.get("sealed"), dict):
+        try:
+            return seal.open_sealed(value["sealed"])
+        except seal.SealError as e:
+            raise SettingsError("%s: %s" % (key, e)) from None
+    raise SettingsError(
+        "%s was sent as plain text, and the mixer writes every tool.call into its session "
+        "log. Type it in the Social Chat panel's Settings, which seals it, or put it in "
+        "[plugins.social-chat] in the mixer's config file." % key)
+
+
 class Settings:
     def __init__(self, folder=None):
         self.folder = folder or data_dir()
@@ -87,8 +106,8 @@ class Settings:
             saved = {}
         for key, value in (saved.get("values") or {}).items():
             if key in DEFAULTS:
-                self.values[key] = coerce(key, value)
-        self.from_mixer = saved.get("from_mixer") or {}
+                self.values[key] = coerce(key, vault.unlock(value))
+        self.from_mixer = {k: vault.unlock(v) for k, v in (saved.get("from_mixer") or {}).items()}
         self._register()
 
     def take_mixer(self, params):
@@ -108,18 +127,21 @@ class Settings:
         return changed
 
     def update(self, changes):
-        """Apply the panel's changes. A secret sent as "" is kept as it was;
-        send null to forget it. Answers the keys that really changed."""
-        changed = []
+        """Apply the panel's changes. A secret arrives sealed (`{"sealed":
+        {...}}`, see seal.py), "" keeps it as it was and null forgets it.
+        Answers the keys that really changed."""
+        pending = {}
         for key, value in (changes or {}).items():
             if key not in DEFAULTS:
                 continue
-            if key in SECRETS and value in ("", SENTINEL):
-                continue
-            value = DEFAULTS[key] if value is None else coerce(key, value)
-            if self.values[key] != value:
-                self.values[key] = value
-                changed.append(key)
+            if key in SECRETS:
+                if value in ("", SENTINEL):
+                    continue
+                value = secret_of(key, value)  # raises before anything changes
+            pending[key] = DEFAULTS[key] if value is None else coerce(key, value)
+        changed = [key for key, value in pending.items() if self.values[key] != value]
+        for key in changed:
+            self.values[key] = pending[key]
         if changed:
             self.save()
         self._register()
@@ -134,8 +156,9 @@ class Settings:
 
     def save(self):
         os.makedirs(self.folder, exist_ok=True)
-        body = json.dumps({"values": self.values, "from_mixer": self.from_mixer},
-                          indent=2, sort_keys=True)
+        locked = {k: vault.lock(v) if k in SECRETS else v for k, v in self.values.items()}
+        mixer = {k: vault.lock(v) if k in SECRETS else v for k, v in self.from_mixer.items()}
+        body = json.dumps({"values": locked, "from_mixer": mixer}, indent=2, sort_keys=True)
         handle, temp = tempfile.mkstemp(dir=self.folder, prefix=".settings-")
         try:
             with os.fdopen(handle, "w", encoding="utf-8") as f:

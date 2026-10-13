@@ -24,6 +24,7 @@ class Hub:
     def __init__(self, keep=500):
         self.keep = max(50, int(keep))
         self.lock = threading.Lock()
+        self.changed = threading.Condition(self.lock)
         self.seq = 0
         self.epoch = "%x" % int(now_ms())  # a new process is a new list
         self.order = []          # (time, seq, id), sorted
@@ -48,6 +49,7 @@ class Hub:
             self.log.append((self.seq, "add", item["id"]))
             while len(self.order) > self.keep:
                 self._drop(self.order[0][2])
+            self.changed.notify_all()
             return True
 
     def add_many(self, items):
@@ -76,6 +78,12 @@ class Hub:
     def snapshot(self):
         with self.lock:
             return [dict(self.items[cid]) for _, _, cid in self.order]
+
+    def wait(self, after, timeout):
+        """Hold until something changes after `after`, or `timeout` seconds."""
+        with self.lock:
+            if self.seq == after and timeout > 0:
+                self.changed.wait_for(lambda: self.seq != after, timeout)
 
     def changes_since(self, after, limit=300):
         """What changed after `after`. A reader too far behind gets everything."""
@@ -109,3 +117,4 @@ class Hub:
             del self.order[at]
         self.seq += 1
         self.log.append((self.seq, "remove", comment_id))
+        self.changed.notify_all()

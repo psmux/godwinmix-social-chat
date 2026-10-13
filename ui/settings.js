@@ -6,6 +6,7 @@
 import { tool } from "./onair.js";
 import { icon } from "./icons.js";
 import { esc } from "./render.js";
+import { seal } from "./seal.js";
 
 const GROUPS = [
   ["youtube", "YouTube", [
@@ -85,12 +86,14 @@ function formHtml(values, statuses, view) {
       <button class="btn" id="test">Send a test comment</button><span class="saved" id="saved"></span></div>`;
 }
 
-function read(form, values) {
+function read(form, values, sealKey) {
   const changes = {};
   for (const el of form.elements) {
     if (!el.name) continue;
     let v = el.type === "checkbox" ? el.checked : el.value;
-    if (el.type === "password") { if (v) changes[el.name] = v; continue; }
+    // A key is sealed for the plugin before it leaves the page: the mixer
+    // records every tool.call, and this way its log holds only ciphertext.
+    if (el.type === "password") { if (v) changes[el.name] = { sealed: seal(sealKey, v.trim()) }; continue; }
     if (el.type === "number") v = Number(v);
     if (v !== values[el.name]) changes[el.name] = v;
   }
@@ -107,7 +110,7 @@ export async function openSettings(client, box, view) {
     box.querySelector("#show-hidden").onchange = (e) => { view.showHidden = e.target.checked; view.dirty = true; };
     box.querySelector("#save").onclick = async () => {
       try {
-        const done = await tool(client, "save_settings", { values: read(box.querySelector("#form"), got.settings) });
+        const done = await tool(client, "save_settings", { values: read(box.querySelector("#form"), got.settings, got.seal_key) });
         await draw();
         say(done.changed.length ? "Saved: " + done.changed.join(", ") : "Nothing changed");
       } catch (e) { say("Not saved: " + (e.message || e)); }

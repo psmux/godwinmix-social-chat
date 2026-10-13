@@ -8,6 +8,12 @@ wraps in MCP's `{content, structuredContent}`. A tool that needs the network
 from . import card, redact
 from .adapters import webhook_parse
 from .moderation import author_key
+from .settings import SettingsError
+from . import seal
+
+
+# The core gives a tool five seconds to answer; a long poll leaves room.
+MAX_WAIT_MS = 3500
 
 
 class ToolError(Exception):
@@ -30,6 +36,8 @@ def comments(chat, args):
     after = int(args.get("after") or 0)
     if args.get("epoch") and args["epoch"] != chat.hub.epoch:
         after = 0
+    wait_ms = min(max(int(args.get("wait_ms") or 0), 0), MAX_WAIT_MS)
+    chat.hub.wait(after, wait_ms / 1000.0)
     answer = chat.hub.changes_since(after, int(args.get("limit") or 300))
     answer["statuses"] = chat.statuses()
     answer["moderation"] = chat.moderation.view()
@@ -46,14 +54,18 @@ def status(chat, args):
 
 
 def settings(chat, args):
-    return {"settings": chat.settings.view(), "statuses": chat.statuses()}
+    return {"settings": chat.settings.view(), "statuses": chat.statuses(),
+            "seal_key": seal.public_hex()}
 
 
 def save_settings(chat, args):
     values = args.get("values")
     if not isinstance(values, dict):
         raise ToolError("save_settings takes {values: {...}} with the keys to change")
-    changed = chat.save_settings(values)
+    try:
+        changed = chat.save_settings(values)
+    except SettingsError as e:
+        raise ToolError(str(e), {"retryable": False}) from None
     return {"changed": changed, "settings": chat.settings.view(),
             "statuses": chat.statuses()}
 
@@ -124,7 +136,7 @@ def test_comment(chat, args):
 
 TOOLS = {f.__name__: f for f in (comments, status, settings, save_settings, reconnect, pin,
                                  hide, ban, card_fields, card_off, avatars, test_comment)}
-SLOW = {"card_fields", "avatars", "save_settings", "reconnect"}
+SLOW = {"card_fields", "avatars", "save_settings", "reconnect", "comments"}
 
 
 def call(chat, name, args):
