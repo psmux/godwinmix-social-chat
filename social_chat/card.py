@@ -15,7 +15,7 @@ PLATFORM_COLOURS = {"youtube": "#ff0033", "twitch": "#9146ff", "facebook": "#187
 PLATFORM_NAMES = {"youtube": "YOUTUBE", "twitch": "TWITCH", "facebook": "FACEBOOK",
                   "webhook": "WEBHOOK", "x": "X"}
 CLEAR_PIXEL = ("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAA"
-               "DUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==")
+               "DUlEQVR42mNgYGBgAAAABQABeqhXUAAAAABJRU5ErkJggg==")
 MAX_FIELD = 2000
 
 

@@ -9,7 +9,7 @@
     <gmx:field name="platform" label="Platform" default="YOUTUBE"/>
     <gmx:field name="platform_colour" label="Platform colour" type="color" default="#ff0033"/>
     <gmx:field name="initials" label="Initials, under the picture" default="PN"/>
-    <gmx:field name="avatar" label="Picture (a data URI)" default="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="/>
+    <gmx:field name="avatar" label="Picture (a data URI)" default="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNgYGBgAAAABQABeqhXUAAAAABJRU5ErkJggg=="/>
     <gmx:field name="accent" label="Accent colour" type="color" default="#f5b301"/>
     <gmx:field name="panel" label="Panel colour" type="color" default="#0d1324"/>
     <gmx:field name="text" label="Text colour" type="color" default="#f8fafc"/>

@@ -75,6 +75,15 @@ class Card(unittest.TestCase):
             sent = set(card.fields(comment("x", "1", "a", "b"), style))
             self.assertTrue(sent <= declared, "%s sends %s" % (style, sent - declared))
 
+    def test_the_empty_picture_is_really_transparent(self):
+        import base64
+        import zlib
+        png = base64.b64decode(card.CLEAR_PIXEL.split(",", 1)[1])
+        at = png.index(b"IDAT")
+        size = int.from_bytes(png[at - 4:at], "big")
+        row = zlib.decompress(png[at + 4:at + 4 + size])
+        self.assertEqual(row[-1], 0, "the alpha of the one pixel is 0, so the initials show")
+
     def test_the_template_address_is_absolute_with_forward_slashes(self):
         uri = card.template_uri("C:\\plugins\\social-chat\\1.0.0", "card")
         self.assertTrue(uri.startswith("template:"))
