@@ -1,0 +1,54 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: GMX_PYTHON=python ./check
+      - name: The tag matches the manifest
+        run: |
+          want="${GITHUB_REF_NAME#v}"
+          have=$(sed -n 's/^version = "\(.*\)"/\1/p' gmx-plugin.toml | head -1)
+          if [ "$want" != "$have" ]; then
+            echo "tag $GITHUB_REF_NAME says $want but gmx-plugin.toml says $have. Change one and tag again."
+            exit 1
+          fi
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build one archive per platform
+        run: SOURCE_DATE_EPOCH=$(git log -1 --format=%ct) python dev/package.py dist
+      - name: Check every archive holds the manifest at social-chat/
+        run: |
+          for f in dist/*.tar.gz; do tar -tzf "$f" | grep -qx 'social-chat/gmx-plugin.toml'; done
+          python -c "import zipfile,glob; [zipfile.ZipFile(f).getinfo('social-chat/gmx-plugin.toml') for f in glob.glob('dist/*.zip')]"
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          notes=$(awk -v v="## ${GITHUB_REF_NAME#v}" '$0==v{f=1;next} /^## /{f=0} f' CHANGELOG.md)
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" dist/* --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" dist/* --title "Social Chat ${GITHUB_REF_NAME#v}" --notes "$notes"
+          fi

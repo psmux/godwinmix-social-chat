@@ -1,0 +1,40 @@
+#!/bin/sh
+# Everything that can be checked without a mixer, in well under a minute.
+#
+#   ./check          the whole offline suite
+#   ./check --live   and a 30 second read of real Twitch chat (needs the internet)
+set -eu
+cd "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+# The first Python that actually runs: on Windows `python3` can be a Store stub.
+for python in ${GMX_PYTHON:-} python3 python; do
+    "$python" -c 'import sys; sys.exit(sys.version_info < (3, 10))' >/dev/null 2>&1 && break
+done
+failed=0
+
+step() {
+    printf '%-36s' "$1"
+    shift
+    if output=$("$@" 2>&1); then echo "ok"; else echo "FAILED"; echo "$output" | sed 's/^/    /'; failed=1; fi
+}
+
+# stderr is the control channel and stdout must stay quiet: a print() is a bug.
+no_print() {
+    if grep -rn --include='*.py' '^[^#]*\bprint(' main.py social_chat; then
+        echo "print() writes to stdout. Use rpc.log(), which writes to stderr as the protocol asks."
+        return 1
+    fi
+}
+
+panel_parses() {
+    command -v node >/dev/null 2>&1 || { echo "node not installed, skipped"; return 0; }
+    for f in ui/*.js; do node --check --input-type=module < "$f" || { echo "in $f"; return 1; }; done
+}
+
+echo "checking social-chat with $($python --version 2>&1)"
+step "compile" "$python" -m compileall -q main.py social_chat tests
+step "nothing printed to stdout" no_print
+step "panel modules parse" panel_parses
+if [ "${1:-}" = "--live" ]; then export SOCIAL_CHAT_LIVE=1; fi
+step "unit tests" "$python" -m unittest discover -s tests -p 'test_*.py'
+[ "$failed" -eq 0 ] && echo "all checks passed" || echo "something failed; fix it and run ./check again"
+exit "$failed"
