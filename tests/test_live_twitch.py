@@ -4,7 +4,7 @@ Skipped unless SOCIAL_CHAT_LIVE=1, because it needs the internet and a busy
 channel that is live right now. It joins a list of usually busy channels for
 30 seconds and passes when comments arrive from any of them.
 
-    SOCIAL_CHAT_LIVE=1 python -m unittest tests/test_live_twitch.py
+    SOCIAL_CHAT_LIVE=1 python -m unittest discover -s tests -p 'test_live_twitch.py' -v
 """
 import os
 import time

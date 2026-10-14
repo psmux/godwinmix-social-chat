@@ -35,4 +35,4 @@ jobs:
         if: matrix.os == 'ubuntu-latest' && matrix.python == '3.13'
         continue-on-error: true
         shell: bash
-        run: SOCIAL_CHAT_LIVE=1 python -m unittest tests/test_live_twitch.py -v
+        run: SOCIAL_CHAT_LIVE=1 python -m unittest discover -s tests -p 'test_live_twitch.py' -v
