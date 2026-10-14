@@ -276,9 +276,10 @@ These are the mixer's, not the plugin's, and the plugin works around each:
 * Every `tool.call` goes into the mixer's session log, even a read. The panel
   asks for new comments with a long poll, about one call every one to three
   seconds while it is open, and none when it is closed.
-* On Windows, `gmx plugin remove social-chat` can fail with "Access is
-  denied" because the folder is deleted while the plugin process is still
-  stopping. Run it again a few seconds later.
+* On Windows, `gmx plugin remove social-chat` can answer "Access is denied",
+  because the mixer deletes the folder while the plugin process is still
+  stopping. The plugin is gone from the mixer by then, but its folder stays:
+  delete `plugins/social-chat` by hand before installing it again.
 
 ## Development
 
