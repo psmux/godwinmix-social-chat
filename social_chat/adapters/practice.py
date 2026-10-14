@@ -23,6 +23,14 @@ SAMPLES = [
     ("youtube", "Luis Ortega", "How long have you been streaming with this setup?"),
     ("twitch", "neon_tortoise", "the lower thirds look great"),
     ("facebook", "Ines Duarte", "Hello from Porto!"),
+    ("youtube", "Amara Diallo", "Could you put the recipe link in the description?"),
+    ("twitch", "copper_heron", "LOL the cat walking across the desk"),
+    ("facebook", "Wen Li", "Our whole office is watching on the big screen today"),
+    ("youtube", "Jonas Berg", "What microphone is that? It sounds really warm"),
+    ("twitch", "midnight_ferret", "hi from Brazil"),
+    ("facebook", "Fatima Rahman", "Thank you for doing this every week, it helps a lot"),
+    ("youtube", "Theo Martin", "Is the Q&A at the end or now?"),
+    ("twitch", "saltwater_lynx", "the new overlay is clean"),
 ]
 
 

@@ -15,7 +15,7 @@ const $ = (id) => document.getElementById(id);
 const MAX_SHOWN = 300;
 const view = {
   comments: new Map(), order: [], seq: 0, epoch: "", statuses: [],
-  filters: new Set(["youtube", "twitch", "facebook", "webhook", "x", "practice"]),
+  muted: new Set(),
   known: new Set(), search: "", questionsOnly: false, showHidden: false, highlight: true,
   pinned: new Set(), pins: [], hidden: new Set(), banned: [], onairId: null, onair: null,
   pictures: new Map(), style: "card", dirty: true,
@@ -51,7 +51,7 @@ function absorb(answer) {
 }
 
 function paint() {
-  $("chips").innerHTML = chipsHtml(view.statuses, view.filters);
+  $("chips").innerHTML = chipsHtml(view.statuses, view.muted);
   $("problems").innerHTML = problemsHtml(view.statuses);
   $("pins").innerHTML = view.pins.map((c) => rowHtml(c, view)).join("");
   const list = $("list");
@@ -64,7 +64,9 @@ function paint() {
   const bar = $("onair");
   bar.classList.toggle("live", !!view.onair);
   $("onair-text").textContent = view.onair ? `${view.onair.comment.author}: ${view.onair.comment.text}` : "Nothing on air";
-  $("off").disabled = !view.onair;
+  // Always pressable: after a mixer restart a card can still be up while the
+  // plugin no longer remembers it, and Take off is how it comes down.
+  $("off").disabled = false;
   view.dirty = false;
 }
 
@@ -155,7 +157,7 @@ function wire() {
     const chip = e.target.closest(".chip[data-platform]");
     if (!chip) return;
     const p = chip.dataset.platform;
-    view.filters.has(p) ? view.filters.delete(p) : view.filters.add(p);
+    view.muted.has(p) ? view.muted.delete(p) : view.muted.add(p);
     paint();
   });
   $("search").addEventListener("input", (e) => { view.search = e.target.value.trim().toLowerCase(); paint(); });

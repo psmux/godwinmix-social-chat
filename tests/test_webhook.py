@@ -82,6 +82,8 @@ class Listening(unittest.TestCase):
             self.assertEqual(status, 202)
             self.assertEqual(body, {"accepted": 3, "duplicates": 0, "skipped": 2})
         self.assertEqual(len(self.hub.snapshot()), 3)
+        self.assertEqual({c["via"] for c in self.hub.snapshot()}, {"webhook"},
+                         "the panel's webhook chip mutes TikTok and Kick posted here")
         status, body = self.post(fixture("webhook_batch.json"))
         if status is not None:
             self.assertEqual(body["duplicates"], 3)

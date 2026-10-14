@@ -130,6 +130,7 @@ def test_comment(chat, args):
                               "id": args.get("id")})
     if not item:
         raise ToolError("test_comment needs some text")
+    item["via"] = "webhook"
     chat.sink.add(item)
     return {"comment": item}
 

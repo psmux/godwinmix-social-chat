@@ -28,8 +28,11 @@ export function avatarHtml(c, pictures) {
   return `<div class="avatar" style="background:${esc(colour)}">${face}${icon(c.platform, "badge")}</div>`;
 }
 
+const OWN_ICONS = ["youtube", "twitch", "facebook", "webhook", "x"];
+
 function tags(c) {
   let out = "";
+  if (!OWN_ICONS.includes(c.platform)) out += `<span class="tag">${esc(c.platform)}</span>`;
   if (c.amount) out += `<span class="tag money">${esc(c.amount)}</span>`;
   if (c.kind === "member") out += `<span class="tag">member</span>`;
   for (const b of c.badges || []) if (b === "owner" || b === "moderator") out += `<span class="tag">${esc(b)}</span>`;
@@ -40,7 +43,7 @@ function tags(c) {
 export function rowHtml(c, view) {
   const classes = ["row"];
   if (c.question && view.highlight) classes.push("question");
-  if (view.onairId === c.id) classes.push("onair");
+  if (view.onairId === c.id) classes.push("aired");
   if (view.hidden.has(c.id)) classes.push("hidden-c");
   const pinned = view.pinned.has(c.id);
   const authorColour = c.platform === "twitch" && c.colour ? ` style="color:${esc(c.colour)}"` : "";
@@ -57,10 +60,10 @@ export function rowHtml(c, view) {
   </div>`;
 }
 
-export function chipsHtml(statuses, filters) {
+export function chipsHtml(statuses, muted) {
   return statuses
     .filter((s) => s.state !== "off" || s.count > 0)
-    .map((s) => `<span class="chip ${filters.has(s.platform) ? "" : "muted"}" data-platform="${esc(s.platform)}"
+    .map((s) => `<span class="chip ${muted.has(s.platform) ? "muted" : ""}" data-platform="${esc(s.platform)}"
         title="${esc(s.title)}: ${esc(STATE_WORDS[s.state] || s.state)}. ${esc(s.detail)}${s.next ? " " + esc(s.next) : ""} Click to show or hide its comments.">
         ${icon(s.platform)}<span class="dot ${esc(s.state)}"></span>${esc(s.count || 0)}</span>`)
     .join("") || `<span class="chip muted">No platform set up yet. Open Settings.</span>`;
@@ -75,7 +78,9 @@ export function problemsHtml(statuses) {
 }
 
 export function matches(c, view) {
-  if (!view.filters.has(c.platform) && !(c.practice && view.filters.has("practice"))) return false;
+  // A chip mutes what came in through that adapter: the webhook's chip mutes
+  // TikTok and Kick posted to it, and Practice mutes the made up comments.
+  if (view.muted.has(c.via || c.platform)) return false;
   if (view.questionsOnly && !c.question) return false;
   if (view.hidden.has(c.id) && !view.showHidden) return false;
   if (view.search) {

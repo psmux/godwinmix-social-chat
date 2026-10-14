@@ -68,6 +68,7 @@ class Adapter:
     # What a subclass calls.
 
     def emit(self, item):
+        item.setdefault("via", self.platform)  # which adapter, for the panel's chips
         if self.sink.add(item):
             self.count += 1
             self.status["count"] = self.count
