@@ -58,7 +58,7 @@ class Webhook(Adapter):
         except OSError as e:
             raise Problem("could not listen on %s:%d (%s)" % (bind, port, e.strerror or e),
                           "Pick another webhook_port in Settings, or stop what is "
-                          "using that one.", retry_s=60) from None
+                          "using that one.", retry_s=10) from None
         self.say(CONNECTED, "listening on http://%s:%d/comments" % (bind, port))
         self.server.serve_forever(poll_interval=0.5)
 

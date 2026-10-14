@@ -1,7 +1,7 @@
 # One recorded conversation with the core, replayed by tests/test_protocol.py.
 # `core` lines are written to the plugin's stdin; `plugin` lines must appear on
 # its stderr, in this order, as a subset of the real line. "*" matches anything.
-{"plugin": {"jsonrpc": "2.0", "id": 0, "method": "initialize", "params": {"plugin": "social-chat", "version": "1.0.0", "api": 1, "transports": []}}}
+{"plugin": {"jsonrpc": "2.0", "id": 0, "method": "initialize", "params": {"plugin": "social-chat", "version": "1.0.0", "api": 1, "transports": ["container"]}}}
 {"core": {"jsonrpc": "2.0", "id": 0, "result": {"core": "godwinmix", "version": "0.3.9", "api_level": 1, "api_compatible": 1, "canvas": {"width": 1280, "height": 720, "fps": 10}, "transport": "", "media": "", "instance": "social-chat-chat", "provide": "chat", "params": {"keep": 300}}}}
 {"plugin": {"jsonrpc": "2.0", "method": "initialized"}}
 {"core": {"jsonrpc": "2.0", "id": 1, "method": "health", "params": {}}}

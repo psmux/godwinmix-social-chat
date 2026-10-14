@@ -179,6 +179,8 @@ that is on the programme, in the style chosen at the top of the panel:
 Press **Take off** to take it off. Putting another comment up while one is on
 air takes the first one out and brings the new one in.
 
+![Comments arriving in the panel and one going on air](gallery/demo.gif)
+
 It is done with the mixer's own public methods, the same ones any client or
 agent uses: the graphic is an SVG template source called `social-chat-card`
 (or `social-chat-strap`), and it is shown and hidden as an item on the

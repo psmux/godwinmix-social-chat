@@ -95,9 +95,13 @@ def show_panel():
 
 def main():
     chat = Chat(ROOT)
+    # A service carries no media, and its provide names no transport. The
+    # top level list still says "container", because the conformance harness
+    # in GodwinMix 0.3.9 refuses a plugin whose list is empty; the core never
+    # opens a media pipe for a provide without media either way.
     rpc.send({"jsonrpc": "2.0", "id": 0, "method": "initialize",
               "params": {"plugin": NAME, "version": VERSION, "api": API,
-                         "transports": [], "provides": provides()}})
+                         "transports": ["container"], "provides": provides()}})
     for line in sys.stdin:
         line = line.strip()
         if not line:
