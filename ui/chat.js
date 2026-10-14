@@ -38,16 +38,20 @@ function absorb(answer) {
     if (!view.known.has(s.platform)) view.known.add(s.platform);
   }
   const m = answer.moderation || {};
-  view.pins = m.pins || [];
-  view.pinned = new Set(view.pins.map((p) => p.id));
-  view.hidden = new Set(m.hidden || []);
-  view.banned = m.banned || [];
+  takeModeration(m);
   view.onair = answer.onair;
   view.onairId = answer.onair ? answer.onair.id : null;
   const sig = JSON.stringify([view.statuses, m.version, view.onairId]);
   if (sig !== view.sig) { view.sig = sig; view.dirty = true; }
   document.documentElement.style.setProperty("--question", answer.question_colour || "#f5b301");
   if (!view.styleTouched && answer.card_style) $("style").value = view.style = answer.card_style;
+}
+
+function takeModeration(m) {
+  view.pins = m.pins || [];
+  view.pinned = new Set(view.pins.map((p) => p.id));
+  view.hidden = new Set(m.hidden || []);
+  view.banned = m.banned || [];
 }
 
 function paint() {
@@ -119,8 +123,10 @@ async function act(what, id) {
   const c = find(id);
   try {
     if (what === "air") await putOnAir(client, id, view.style);
-    if (what === "pin") await tool(client, "pin", { id, pinned: !view.pinned.has(id) });
-    if (what === "hide") await tool(client, "hide", { id, hidden: !view.hidden.has(id) });
+    // Pin, hide and ban answer with the new moderation list: draw it now
+    // rather than at the next poll.
+    if (what === "pin") takeModeration(await tool(client, "pin", { id, pinned: !view.pinned.has(id) }));
+    if (what === "hide") takeModeration(await tool(client, "hide", { id, hidden: !view.hidden.has(id) }));
     if (what === "ban" && c) {
       // A sandboxed page may not open confirm(), so a ban takes two clicks.
       if (view.banArmed !== id) {
@@ -130,13 +136,13 @@ async function act(what, id) {
         return;
       }
       view.banArmed = null;
-      await tool(client, "ban", { id, banned: true });
+      takeModeration(await tool(client, "ban", { id, banned: true }));
     }
   } catch (e) {
     notice(`<div class="problem"><b>That did not work</b>${esc(e.message || e)}</div>`);
     return;
   }
-  view.dirty = true;
+  paint();
 }
 
 function wire() {
